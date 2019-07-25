@@ -19,21 +19,21 @@ class SignUp : AppCompatActivity() {
             val sPassword = password.text.toString()
 
             FirebaseAuth.getInstance()
-                .createUserWithEmailAndPassword(sEmail,sPassword)
+                .createUserWithEmailAndPassword(sEmail, sPassword)
                 .addOnCompleteListener {
-                    if(it.isSuccessful()){
+                    if (it.isSuccessful()) {
                         AlertDialog.Builder(this)
                             .setTitle("SIGN UP")
                             .setMessage("Account created")
-                            .setPositiveButton("OK") { dialog, which->
+                            .setPositiveButton("OK") { dialog, which ->
                                 setResult(Activity.RESULT_OK)
                                 finish()
                             }.show()
-                    }else{
+                    } else {
                         AlertDialog.Builder(this)
                             .setTitle("SIGN UP")
-                            .setMessage( it.exception?.message)
-                            .setPositiveButton("OK",null)
+                            .setMessage(it.exception?.message)
+                            .setPositiveButton("OK", null)
                             .show()
 
                     }

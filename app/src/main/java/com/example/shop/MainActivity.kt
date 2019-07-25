@@ -26,6 +26,8 @@ import kotlin.String as String1
 
 class MainActivity : AppCompatActivity() {
 
+    private val TAG = MainActivity::class.java.simpleName
+
     val functions = listOf<kotlin.String>("Camera", "Invite friends", "Parking", "Coupons", "News", "Maps")
     var n = 9
     private val RC_NICKNAME: Int = 210
@@ -58,25 +60,24 @@ class MainActivity : AppCompatActivity() {
         recycler.adapter = FunctionAdapter()
 
         //Spinner
-        val colors = arrayOf("Red","Green","Blue")
-        val adapter = ArrayAdapter<kotlin.String>(this,android.R.layout.simple_spinner_item, colors)
+        val colors = arrayOf("Red", "Green", "Blue")
+        val adapter = ArrayAdapter<kotlin.String>(this, android.R.layout.simple_spinner_item, colors)
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
         spinner.adapter = adapter
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                Log.d("MainActivity","onItemSelected:  ${colors[position]}")
+                Log.d("MainActivity", "onItemSelected:  ${colors[position]}")
             }
 
 
         }
     }
 
-
-    inner class  FunctionAdapter() :RecyclerView.Adapter<FunctionHolder>(){
+    inner class FunctionAdapter() : RecyclerView.Adapter<FunctionHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FunctionHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.row_function, parent, false)
@@ -89,14 +90,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: FunctionHolder, position: Int) {
-        holder.nameText.text = functions.get(position)
+            holder.nameText.text = functions.get(position)
+            holder.itemView.setOnClickListener { view->
+                functionClicked(holder,position)
+            }
         }
 
     }
 
-    class FunctionHolder(view: View) : RecyclerView.ViewHolder(view){
+    private fun functionClicked(holder: FunctionHolder, position: Int) {
+        Log.d(TAG,"functionClicked:  $position")
+         when(position){
+            1->startActivity(Intent(this,ContactActivity::class.java))
+         }
 
-        var nameText : TextView = view.name
+    }
+
+    class FunctionHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        var nameText: TextView = view.name
     }
 
     private fun authChanged(auth: FirebaseAuth) {
@@ -126,24 +138,25 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         //NICKNAME.text = getNickname()
-        FirebaseDatabase.getInstance()
-            .getReference("users")
-            .child(auth.currentUser!!.uid)
-            .child("nickname")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (auth.currentUser != null) {
+            FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(auth.currentUser!!.uid)
+                .child("nickname")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 
-                }
+                    }
 
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    NICKNAME.text = dataSnapshot.value as kotlin.String
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        NICKNAME.text = dataSnapshot.value as kotlin.String
 
-                }
+                    }
 
 
-            })   //use only one time
-
+                })   //use only one time
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

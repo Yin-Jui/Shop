@@ -18,7 +18,7 @@ class Nickname : AppCompatActivity() {
 
             FirebaseDatabase.getInstance()
                 .getReference("users")
-                .child( FirebaseAuth.getInstance().currentUser!!.uid)
+                .child(FirebaseAuth.getInstance().currentUser!!.uid)
                 .child("nickname")
                 .setValue(name.text.toString())
             setResult(Activity.RESULT_OK)
