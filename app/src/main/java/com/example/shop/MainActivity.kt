@@ -27,7 +27,7 @@ import kotlin.String as String1
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
-
+    var cacheService: Intent? = null
     val functions = listOf<kotlin.String>("Camera", "Invite friends", "Parking", "Coupons", "News", "Movies", "Maps")
     var n = 9
     private val RC_NICKNAME: Int = 210
@@ -173,7 +173,20 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
+            R.id.action_cache -> {
+                cacheService = Intent(this, CacheService::class.java)
+                startService(cacheService)
+                startService(Intent(this,CacheService::class.java))
+                startService(Intent(this,CacheService::class.java))
+                true
+            }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+    override fun onStop() {
+        super.onStop()
+        if (cacheService != null) {
+            stopService(cacheService)
         }
     }
 }
