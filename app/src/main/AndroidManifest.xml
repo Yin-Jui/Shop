@@ -13,6 +13,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <activity android:name=".MovieActivity">
+        </activity>
         <activity android:name=".ParkingActivity">
         </activity>
         <activity android:name=".ContactActivity">
