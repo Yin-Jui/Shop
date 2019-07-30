@@ -4,13 +4,28 @@ import android.app.IntentService
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.bumptech.glide.Glide
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
 class CacheService(): IntentService("CacheService"), AnkoLogger{
-    override fun onHandleIntent(p0: Intent?) {
+
+    companion object{
+        val ACTION_CACHE_DONE = "action_cache_done"
+
+    }
+
+
+    override fun onHandleIntent(intent: Intent?) {
         info("onHandleIntent")
-        Thread.sleep(5000)
+        val title = intent?.getStringExtra("TITLE")
+        val url = intent?.getStringExtra("URL")
+        info("Downloading....$title  $url")
+        Glide.with(this)
+            .download(url)
+
+        sendBroadcast(Intent(ACTION_CACHE_DONE))
+
     }
 
     override fun onBind(p0: Intent?): IBinder? {

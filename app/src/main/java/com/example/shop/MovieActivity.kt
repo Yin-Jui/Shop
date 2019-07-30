@@ -39,8 +39,7 @@ val retrofit = Retrofit.Builder()
         setContentView(R.layout.activity_movie)
         //getjson
         doAsync {
-     //       val json = URL("https://api.myjson.com/bins/sebkp").readText()
-     //       movies = Gson().fromJson<List<Movie>>(json, object : TypeToken<List<Movie>>() {}.type)
+
 val movieService = retrofit.create(MovieService::class.java)
             movies = movieService.listMovies()
                 .execute()
