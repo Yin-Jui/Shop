@@ -6,6 +6,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\0release\\release.jks')
+            keyAlias = 'shop'
+            storePassword '10310317'
+            keyPassword '10310317'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
     defaultConfig {
@@ -15,6 +23,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
