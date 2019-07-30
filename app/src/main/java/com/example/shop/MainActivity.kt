@@ -39,10 +39,19 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     var n = 9
     private val RC_NICKNAME: Int = 210
     private val RC_SIGNUP: Int = 200
-
     var signup = false
-
     val auth = FirebaseAuth.getInstance()
+
+    val broadcastReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(p0: Context?, intent: Intent?) {
+            if (intent?.action.equals(CacheService.ACTION_CACHE_DONE)) {
+                info("MainActivity cache informed")
+                //toast("MainActivity cache informed")
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -111,6 +120,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             1 -> startActivity(Intent(this, ContactActivity::class.java))
             2 -> startActivity(Intent(this, ParkingActivity::class.java))
             5 -> startActivity(Intent(this, MovieActivity::class.java))
+            4->startActivity(Intent(this, NewsActivity::class.java))
         }
 
     }
@@ -173,15 +183,6 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         return true
     }
 
-    val broadcastReceiver = object : BroadcastReceiver() {
-
-        override fun onReceive(p0: Context?, intent: Intent?) {
-            if (intent?.action.equals(CacheService.ACTION_CACHE_DONE)) {
-                info("MainActivity cache informed")
-                //toast("MainActivity cache informed")
-            }
-        }
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
